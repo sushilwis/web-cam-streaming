@@ -37,7 +37,10 @@ function viewVideo(video, context){
   context.drawImage(video, 0, 0, context.width, context.height);
   // var room = GetParameterValues('room');
   // console.log(room);
-  socket.emit('createStream', canvas.toDataURL('image/webp'));
+  socket.emit('createStream', {
+    text: messageTextbox.val(),
+    streamData: canvas.toDataURL('image/webp')
+  });
   // socket.emit('stream', {room: room, data: canvas.toDataURL('image/webp')});
 }
 
@@ -141,15 +144,21 @@ jQuery('#message-form').on('submit', function (e) {
     navigator.getUserMedia({video: true}, loadCam, loadFail);
   }
 
-  context.drawImage(video, 0, 0, context.width, context.height);
+  setInterval(function(){
+    viewVideo(video, context);
+  }, 50);
+
+  // context.drawImage(video, 0, 0, context.width, context.height);
 
 
-  socket.emit('createStream', {
-    text: messageTextbox.val(),
-    streamData: canvas.toDataURL('image/webp')
-  }, function () {
-    messageTextbox.val('')
-  });
+  // socket.emit('createStream', {
+  //   text: messageTextbox.val(),
+  //   // streamData: canvas.toDataURL('image/webp')
+  //   streamData: canvas.toDataURL('image/webp')
+  // }, function () {
+  //   messageTextbox.val('')
+  // });
+
 });
 
 
